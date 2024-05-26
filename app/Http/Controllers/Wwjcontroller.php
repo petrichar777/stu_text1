@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Admin;
+use PHPUnit\Exception;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
@@ -47,9 +48,13 @@ class Wwjcontroller extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('student_id', 'password');
-
+        try {
+            $user = Student::where('student_id', $credentials['student_id'])->first();
+        }catch (Exception ){
+            return ;
+    }
         // 验证提供的用户名和密码
-        $user = Student::where('student_id', $credentials['student_id'])->first();
+
 
         if ($user && Hash::check($credentials['password'], $user->password)) {
             // 验证密码是否匹配

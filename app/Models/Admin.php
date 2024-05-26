@@ -19,4 +19,5 @@ class Admin extends Model
         'major',
         'password',
     ];
+
 }
